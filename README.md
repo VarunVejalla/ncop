@@ -12,14 +12,15 @@ We do not assume the ratio converges.
 ## Current mathematical bounds
 
 ```text
-2 <= liminf phi(n)/n <= limsup phi(n)/n <= 4
+2 <= liminf phi(n)/n <= limsup phi(n)/n <= 2 + sqrt(3)
 ```
 
 Both endpoint predicates are proved in Lean. The lower proof specializes the
 matroid strategy of Bednarska and Pikhurko to a partition matroid with a balanced
 orientation and two terminal sinks; see
 [the formalized lower proof](lower-bound/best/partition-proof.md). The upper
-proof grows two balanced terminal trees.
+proof grows two balanced terminal trees and creates an unblockable two-move
+joining threat; see [the upper proof](upper-bound/best/lookahead-proof.md).
 
 Start with [the research index](docs/research-index.md) for proof status and
 remaining obligations.
@@ -30,7 +31,7 @@ remaining obligations.
 | --- | --- |
 | [lower-bound/best](lower-bound/best/README.md) | Proved coefficient 2; partition-matroid strategy and source argument |
 | [lower-bound/experiments](lower-bound/experiments/README.md) | Attempts to improve the lower coefficient |
-| [upper-bound/best](upper-bound/best/README.md) | Established coefficient 4 and two-frontier proof map |
+| [upper-bound/best](upper-bound/best/README.md) | Proved coefficient 2 + sqrt(3) and lookahead proof map |
 | [upper-bound/experiments](upper-bound/experiments/README.md) | Attempts to improve the upper coefficient |
 | [research](research/README.md) | Shared methods, component model, and convergence questions |
 | [NCop](NCop/) | Shared Lean game definitions and supporting proofs |
@@ -60,8 +61,9 @@ outputs. Simulations do not establish optimal-play bounds.
 python scripts/evaluate_candidate.py
 ```
 
-`Candidate.lower` and `Candidate.upper` prove the target coefficients 2 and 4.
-The evaluator scores their gap as 2. During development, when shared proof
+`Candidate.lower` and `Candidate.upper` prove the target coefficients 2 and
+`2 + sqrt(3)`. The evaluator scores their gap as `sqrt(3)`. During development,
+when shared proof
 files are intentionally modified, use `--allow-trusted-dirty`; the default
 evaluation rejects changes to the trusted tree.
 

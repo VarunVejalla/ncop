@@ -1,10 +1,10 @@
 # Lean Research Scaffold
 
 Current status is recorded in [research-index.md](research-index.md). The
-established mathematical target coefficients are now 2 and 4. This guide's
+proved mathematical target coefficients are now 2 and `2 + sqrt(3)`. This guide's
 source-isolation proof is a preliminary formalization milestone, not the best
 known lower bound. The candidate now proves both `lower` for coefficient 2
-and `upper` for coefficient 4. The preliminary milestones below are historical.
+and `upper` for coefficient `2 + sqrt(3)`. The preliminary milestones below are historical.
 
 This repository separates the immutable problem statement from the file that
 agents are expected to mutate.
@@ -32,7 +32,7 @@ It should eventually expose:
 namespace Candidate
 
 def C1 : ℝ := 2
-def C2 : ℝ := 4
+noncomputable def C2 : ℝ := 2 + Real.sqrt 3
 
 theorem lower : NCop.BreakerLowerBound C1 := by
   ...

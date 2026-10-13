@@ -4,12 +4,14 @@
 
 Write `L = liminf phi(n)/n` and `U = limsup phi(n)/n`. The objective is a
 larger lower bound on `L` and a smaller upper bound on `U`; convergence is a
-separate question. The owner confirms the established baseline `2 <= L <= U <= 4`.
+separate question. The original owner-established baseline was `2 <= L <= U <= 4`.
+The extra-lookahead strategy now proves `2 <= L <= U <= 2 + sqrt(3)`.
 
 | Result | Mathematical status | Repository formalization status |
 | --- | --- | --- |
 | Matroid lower coefficient 2 | Established by the owner; source and application written | Partition-matroid certificate and complete `BreakerLowerBound 2` proved |
 | Two-frontier upper coefficient 4 | Established by the owner | Complete finite strategy and `MakerUpperBound 4` proved |
+| Two-move lookahead upper coefficient 2 + sqrt(3) | Complete written strategy | Complete finite strategy for n >= 4 and `MakerUpperBound (2 + Real.sqrt 3)` proved |
 | Source isolation | Elementary weaker lower strategy | Supporting lemmas written; no final asymptotic theorem |
 
 The original notes record an older `n <= phi(n) <= 4n` baseline. They predate
@@ -35,6 +37,14 @@ the owner's clarification about the matroid lower bound and are historical.
 - `NCop/BalancedTrees.lean`: explicit terminal-tree invariant, initialization,
   expansion, side swapping, and complete finite Maker strategy for `m >= 4n`;
   concludes `makerUpperBound_four`.
+- `NCop/LookaheadCounting.lean`: disjoint cross-edge and outside-fiber deletion
+  counts needed to prevent immediate and two-move wins.
+- `NCop/LookaheadThreat.lean`: attachment creates more than n winning edges,
+  forcing a win against every next Breaker deletion.
+- `NCop/LookaheadArithmetic.lean`: integer stopping size and finite margin for
+  every n >= 4 and m >= (2 + sqrt(3))*n.
+- `NCop/LookaheadStrategy.lean`: complete balanced growth to the stopping state,
+  the finite winning theorem, and `makerUpperBound_two_add_sqrt_three`.
 - `NCop/MatroidRepair.lean`: fundamental-circuit repair outside protected Maker
   edges, derived from Mathlib's matroid API.
 - `NCop/MatroidStrategy.lean`: complete independent-cover repair and Breaker
@@ -48,11 +58,13 @@ the owner's clarification about the matroid lower bound and are historical.
   `breakerLowerBound_two` by choosing `N >= 4/eps`.
 - `NCop/ProofAudit.lean`: axiom-dependency reports for the upper endpoint and
   the general matroid strategy.
-- `Candidates/Candidate.lean`: constants 2 and 4; both `lower` and `upper` are
+- `Candidates/Candidate.lean`: constants 2 and `2 + sqrt(3)`; both `lower` and `upper` are
   proved against the exact target predicates.
 
-The upper formalization now handles every step above directly at `m >= 4n`.
+The original upper formalization handles every step directly at `m >= 4n`.
 It does not require embedding a `4n`-vertex subgame into a larger board.
+The improved upper proof works directly on every board in its stated range;
+see [the lookahead proof](../upper-bound/best/lookahead-proof.md).
 
 The lower endpoint is complete using an explicit partition matroid instead of
 a cycle matroid. Its finite bound has additive slack, deliberately immaterial
@@ -70,7 +82,7 @@ See also [the evaluator guide](lean_research_setup.md).
 
 - Lower-bound improvements: stronger Breaker strategies, matroid refinements,
   and potential or counting methods.
-- Upper-bound improvements: longer lookahead, adaptive component growth,
+- Upper-bound improvements beyond `2 + sqrt(3)`: longer lookahead, adaptive component growth,
   improved potentials, LP relaxations, conductance/resistance, and overlap
   counting of remaining winning paths.
 - Shared questions: exact component-game descriptions and whether the

@@ -100,9 +100,9 @@ theorem cut_margin {m n : Nat} {T : Terminals m} {B : Board m}
     nlinarith
 
 /-- After any legal deletion, the smaller explicit tree has a free cut edge. -/
-theorem free_cut {m n : Nat} {T : Terminals m} {B : Board m}
-    (h : BalancedTrees n T B) (hn : 1 ≤ n) (hm : 4 * n ≤ m)
-    (hsmall : h.A.card ≤ h.C.card) {D : Edge m → Prop}
+theorem free_cut_of_margin {m n : Nat} {T : Terminals m} {B : Board m}
+    (h : BalancedTrees n T B)
+    (hmargin : (h.r + 1) * n < h.A.card * (m - h.A.card)) {D : Edge m → Prop}
     (hD : LegalBreakerMove n B D) :
     ∃ e, e ∈ Edge.fromSetToOutside h.A h.A ∧ (B.addBreakerSet D).free e := by
   classical
@@ -116,19 +116,20 @@ theorem free_cut {m n : Nat} {T : Terminals m} {B : Board m}
     rcases h.confined _ hp with hA | hC
     · exact hvout (hA v hinc.2.1)
     · exact Finset.disjoint_left.mp h.disjoint hu (hC u hinc.1)
-  · exact h.cut_margin hn hm hsmall
+  · exact hmargin
 
 /-- Claim a cut edge: it either joins the terminal trees or adds a previously
 unused vertex to the smaller tree while preserving every strategy condition. -/
-theorem grow {m n : Nat} {T : Terminals m} {B : Board m}
-    (h : BalancedTrees n T B) (hn : 1 ≤ n) (hm : 4 * n ≤ m)
+theorem grow_of_margin {m n : Nat} {T : Terminals m} {B : Board m}
+    (h : BalancedTrees n T B)
+    (hmargin : (h.r + 1) * n < h.A.card * (m - h.A.card))
     (hsmall : h.A.card ≤ h.C.card) {D : Edge m → Prop}
     (hD : LegalBreakerMove n B D) :
     ∃ e, LegalMakerMove (B.addBreakerSet D) e ∧
       (MakerHasPath T ((B.addBreakerSet D).addMaker e) ∨
-        Nonempty (BalancedTrees n T ((B.addBreakerSet D).addMaker e))) := by
+        ∃ hnew : BalancedTrees n T ((B.addBreakerSet D).addMaker e), hnew.r = h.r + 1) := by
   classical
-  obtain ⟨e, hcut, hfree⟩ := h.free_cut hn hm hsmall hD
+  obtain ⟨e, hcut, hfree⟩ := h.free_cut_of_margin hmargin hD
   obtain ⟨u, hu, v, hv, hinc⟩ := Edge.mem_fromSetToOutside.mp hcut
   have hvA : v ∉ h.A := (Finset.mem_sdiff.mp hv).2
   have he : LegalMakerMove (B.addBreakerSet D) e :=
@@ -162,7 +163,7 @@ theorem grow {m n : Nat} {T : Terminals m} {B : Board m}
       sum_sizes := ?_
       budget := ?_
       valid := valid_addMaker he
-    }⟩
+    }, rfl⟩
     · intro w hw
       rcases Finset.mem_insert.mp hw with rfl | hw
       · exact hreachV
@@ -190,6 +191,29 @@ theorem grow {m n : Nat} {T : Terminals m} {B : Board m}
       have hsum := h.sum_sizes
       omega
     · simpa [Nat.add_mul] using Board.atMost_breaker_addBreakerSet h.budget hD
+
+/-- Original four-n cut interface. -/
+theorem free_cut {m n : Nat} {T : Terminals m} {B : Board m}
+    (h : BalancedTrees n T B) (hn : 1 ≤ n) (hm : 4 * n ≤ m)
+    (hsmall : h.A.card ≤ h.C.card) {D : Edge m → Prop}
+    (hD : LegalBreakerMove n B D) :
+    ∃ e, e ∈ Edge.fromSetToOutside h.A h.A ∧ (B.addBreakerSet D).free e :=
+  h.free_cut_of_margin (h.cut_margin hn hm hsmall) hD
+
+/-- Original four-n interface, obtained from the general cut-margin step. -/
+theorem grow {m n : Nat} {T : Terminals m} {B : Board m}
+    (h : BalancedTrees n T B) (hn : 1 ≤ n) (hm : 4 * n ≤ m)
+    (hsmall : h.A.card ≤ h.C.card) {D : Edge m → Prop}
+    (hD : LegalBreakerMove n B D) :
+    ∃ e, LegalMakerMove (B.addBreakerSet D) e ∧
+      (MakerHasPath T ((B.addBreakerSet D).addMaker e) ∨
+        Nonempty (BalancedTrees n T ((B.addBreakerSet D).addMaker e))) :=
+by
+  obtain ⟨e, he, hnext⟩ := h.grow_of_margin (h.cut_margin hn hm hsmall) hsmall hD
+  refine ⟨e, he, ?_⟩
+  rcases hnext with hw | ⟨hnew, _⟩
+  · exact Or.inl hw
+  · exact Or.inr ⟨hnew⟩
 
 def initial {m n : Nat} (T : Terminals m) :
     BalancedTrees n T (Board.empty m) where

@@ -2,6 +2,10 @@ import NCop.Game
 import NCop.Asymptotic
 import NCop.InvariantStrategy
 import NCop.BalancedTrees
+import NCop.LookaheadCounting
+import NCop.LookaheadThreat
+import NCop.LookaheadArithmetic
+import NCop.LookaheadStrategy
 import NCop.MatroidRepair
 import NCop.MatroidStrategy
 import NCop.PartitionSafety

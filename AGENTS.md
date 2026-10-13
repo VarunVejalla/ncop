@@ -4,14 +4,17 @@
 
 Improve the constants in lower bounds on `liminf phi(n)/n` and upper bounds on
 `limsup phi(n)/n` for the two-terminal, Breaker-first game on `K_m`.
-The established mathematical baseline is 2 and 4. Small-n values are secondary;
+The current proved coefficients are 2 and `2 + sqrt(3)` (original baseline
+2 and 4). Small-n values are secondary;
 do not assume a limit exists. Start with `docs/research-index.md`.
 
 ## Research conventions
 
 - Distinguish owner-established mathematics, complete written proofs,
   kernel-checked endpoint theorems, supporting lemmas, and conjectures.
-- Both epsilon/eventually endpoints 2 and 4 are proved. The lower proof uses
+- Both epsilon/eventually endpoints 2 and `2 + sqrt(3)` are proved. The upper
+  proof uses the two-move lookahead in `upper-bound/best/lookahead-proof.md`.
+  The lower proof uses
   the partition-matroid specialization in `lower-bound/best/partition-proof.md`;
   the owner's original graphic-matroid argument is retained separately in
   `matroid-proof.md`. Do not downgrade the baseline to source-isolation 1.
