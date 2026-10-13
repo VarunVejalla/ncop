@@ -1,0 +1,37 @@
+I want to model / write a solver for the following two-player game. There is the complete graph on m vertices K_m with two terminals s and t. Each round, the cop removes up to n edges. the robber then picks an undeleted edge to add to their edge set (these can't be deleted by the cop). The robber wins if they make a path from node s to node t. The cop wins if they prevent this.
+
+Here is what I was thinking for the model / solver. We can imagine this as being played on the components. So we start off with as many components as nodes. Both the cop and the robber should never choose to remove / add an edge where both nodes are already within the same component. This doesn't really do anything for them.
+
+input: graph G in terms of the components and weights on edges representing how many edges in each component connect to other components, and the components containing s and t, integer n >= 1, player to play.
+output: which player wins, and if the player to play will win, what a winning response is.
+
+algorithm for robber:
+check if we can immediately connect the two components containing s and t. if we can, say we are winning.
+otherwise, iterate through every two distinct components that have at least 1 edge connecting them, and try connecting them. if the resulting game is losing for the cop, say that the robber is winning.
+
+if we finished iterating with no success, the robber is losing.
+
+algorithm for cop:
+try removing n overall edges (should definitely remove edges that have not been deleted already for crossing the s component and t component). if any resulting games result in loss for robber, say that the cop is winning. otherwise, say that the robber is winning.
+
+This algorithm seems reasonable to me, but it will quickly become infeasible even for n = 5 and m = 15. The branching factor would be over 1,000 for the cop for n = 5 and m = 15. This is because the cop has a lot of flexibility on which edges to remove. The branching factor for the robber is low in comparison; it would be about m choose 2, with less as the game goes on.
+
+We can use symmetry of course, but symmetry will get broken pretty quickly by the cop (because they have so many options). Do you have suggestions on how to improve this? 
+
+
+--------
+
+
+Consider the following two-player game played on components C_1, ..., C_m. There are nonnegative integer edge values E(i, j) [undirected] on these.  Play goes as follows. The cop / breaker removes up to n from the total edge values every round. The robber / maker then chooses two components i, j with E(i, j) > 0 (i.e. not equal to 0 or negative) to merge. The robber merges these components, so the values of edges increase to E(i union j, k) = E(i, k) + E(j, k) for all k not equal to i or j.  The objective of the robber is to eventually merge two specific components. In fact, this game arises from the game that starts with the complete graph K_m, and the robber must eventually be able to get from node s to node t; it suffices to consider the components, and simplifies the game. Essentially, we start off with E(i, j) = 1 for all i not equal to j.
+
+Let phi(n) be the minimum m such that this game is winning for the robber (starting from the components representing the complete graph on m nodes).
+
+I would like to sharpen bounds on phi(n) (so far, I have shown n <= phi(n) <= 4n). Specifically, I would like to explore linear programming relaxation methods, conductance / resistance based methods, erdos-selfridge / beck-style / potential-based methods (in base form, erdos-selfridge / beck methods haven't helped with improving bounds, although we could substantially improve the potential function), or some measure of entropy / counting overlaps of winning edge sets that are still possible. Some methods may sharpen upper bounds, while others may sharpen lower bounds. 
+
+
+-------------
+
+Lower bound strategies (K_m game)
+
+I am considering the following relatively simple strategy for the maker (which would hopefully reduce the upper bound on phi(n)). At every round, the maker chooses a component of minimum degree and claims a random unclaimed edge. 
+

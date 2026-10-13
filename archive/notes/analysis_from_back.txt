@@ -1,0 +1,38 @@
+
+wlog suppose robber wants to connect 1 and 2.
+
+k = 2 components
+
+robber's turn: robber wins iff E(1, 2) >= 1
+cop's turn: cop wins iff E(1, 2) <= n
+
+
+k = 3 components
+
+robber's turn: robber wins iff E(1, 2) > 0 OR (E(1, 3) > 0 AND E(2, 3) >= n+1) OR (E(2, 3) > 0 AND E(1, 3) >= n+1)
+robber's turn: robber wins iff E(1, 2) > 0 OR (min(E(1,3), E(2,3)) > 0 AND max(E(1,3), E(2,3)) >= n+1)
+cop's turn: cop wins iff E(1, 2) + min(E(1,3), E(2,3), max(0, E(1,3)-n) + max(0, E(2,3)-n)) <= n
+
+
+k = 4 components:
+
+
+robber's turn: robber wins iff E(1, 2) > 0 OR can contract (1,3), or (1,4), or (2,3), or (2,4), or (3,4) such that cop is losing with k = 3 components
+	E(1,2) > 0 OR (E(1, 2) + min(E(1,3), E(2,3), max(0, E(1,3)-n) + max(0, E(2,3)-n))) >= n+1
+
+
+
+
+merge 1 and 3 to get 
+
+E(1, 2) + E(3, 2) + min(E(1,4)+E(3,4), E(2,4), max(0, E(1,4)+E(1,4)-n) + max(0, E(2,4)-n)) >= n+1
+
+merge (1,3), (1,4), (2,3), (2,4), or (3,4)
+
+
+"value" of an edge should be high if it's in smaller sets and is more flexible with other edges
+
+
+edge value: sum over sets it is in
+
+
