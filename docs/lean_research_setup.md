@@ -3,7 +3,8 @@
 Current status is recorded in [research-index.md](research-index.md). The
 established mathematical target coefficients are now 2 and 4. This guide's
 source-isolation proof is a preliminary formalization milestone, not the best
-known lower bound. The candidate currently contains constants only.
+known lower bound. The candidate now proves both `lower` for coefficient 2
+and `upper` for coefficient 4. The preliminary milestones below are historical.
 
 This repository separates the immutable problem statement from the file that
 agents are expected to mutate.

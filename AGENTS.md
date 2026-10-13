@@ -11,9 +11,10 @@ do not assume a limit exists. Start with `docs/research-index.md`.
 
 - Distinguish owner-established mathematics, complete written proofs,
   kernel-checked endpoint theorems, supporting lemmas, and conjectures.
-- The matroid lower bound 2 is established according to the owner, but its proof
-  is not yet recorded here. Do not invent the missing argument or downgrade the
-  baseline to the older source-isolation coefficient 1.
+- Both epsilon/eventually endpoints 2 and 4 are proved. The lower proof uses
+  the partition-matroid specialization in `lower-bound/best/partition-proof.md`;
+  the owner's original graphic-matroid argument is retained separately in
+  `matroid-proof.md`. Do not downgrade the baseline to source-isolation 1.
 - A simulation, local progress lemma, or proposed constant is not an endpoint
   proof. Trace improvements through a complete strategy against optimal play.
 - State the turn order and asymptotic quantifiers in every bound argument.

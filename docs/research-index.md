@@ -8,8 +8,8 @@ separate question. The owner confirms the established baseline `2 <= L <= U <= 4
 
 | Result | Mathematical status | Repository formalization status |
 | --- | --- | --- |
-| Matroid lower coefficient 2 | Established by the owner | Argument not yet written here; no endpoint theorem |
-| Two-frontier upper coefficient 4 | Established by the owner | Arithmetic and local free-edge bridge written; global strategy unfinished |
+| Matroid lower coefficient 2 | Established by the owner; source and application written | Partition-matroid certificate and complete `BreakerLowerBound 2` proved |
+| Two-frontier upper coefficient 4 | Established by the owner | Complete finite strategy and `MakerUpperBound 4` proved |
 | Source isolation | Elementary weaker lower strategy | Supporting lemmas written; no final asymptotic theorem |
 
 The original notes record an older `n <= phi(n) <= 4n` baseline. They predate
@@ -28,18 +28,39 @@ the owner's clarification about the matroid lower bound and are historical.
 - `NCop/Frontier.lean`, `NCop/TwoFrontierRaw.lean`: free progress edge after
   any legal Breaker deletion, conditional on the balanced numerical invariant.
 - `NCop/StrategyCriterion.lean`: decreasing-rank criterion for a global Maker win.
-- `Candidates/Candidate.lean`: target constants 2 and 4; no endpoint proofs yet.
+- `NCop/InvariantStrategy.lean`: invariant-to-winning-strategy theorems for both
+  players, with free-edge count supplying termination automatically.
+- `NCop/Asymptotic.lean`: finite linear winning bounds imply the epsilon/eventually
+  asymptotic target predicates.
+- `NCop/BalancedTrees.lean`: explicit terminal-tree invariant, initialization,
+  expansion, side swapping, and complete finite Maker strategy for `m >= 4n`;
+  concludes `makerUpperBound_four`.
+- `NCop/MatroidRepair.lean`: fundamental-circuit repair outside protected Maker
+  edges, derived from Mathlib's matroid API.
+- `NCop/MatroidStrategy.lean`: complete independent-cover repair and Breaker
+  strategy; `MatroidLowerCertificate` isolates the graph-specific obligations.
+- `NCop/PartitionSafety.lean`: an injective outgoing-tail map with terminal
+  sinks prevents a terminal path; an explicit fiber coloring gives a
+  partition-matroid certificate.
+- `NCop/BalancedOrientation.lean`: parity tournament, terminal overrides, and
+  fiber-injective colors using `ceil(m/2)+2` colors.
+- `NCop/LowerBound.lean`: Breaker wins for `m+4 <= 2n`, then concludes
+  `breakerLowerBound_two` by choosing `N >= 4/eps`.
+- `NCop/ProofAudit.lean`: axiom-dependency reports for the upper endpoint and
+  the general matroid strategy.
+- `Candidates/Candidate.lean`: constants 2 and 4; both `lower` and `upper` are
+  proved against the exact target predicates.
 
-To finish the upper formalization: establish the initial invariant; handle
-swapping the smaller terminal side; prove that expansion preserves balance and
-the deletion budget; handle a joining edge as immediate victory; apply a
-decreasing rank. Then transfer to sufficiently large `m >= (4+eps)n` and the
-asymptotic target. The exact-threshold proof and the asymptotic transfer are
-distinct obligations.
+The upper formalization now handles every step above directly at `m >= 4n`.
+It does not require embedding a `4n`-vertex subgame into a larger board.
 
-To finish the lower formalization: first record the owner's matroid argument,
-including its bias convention and eventual threshold, then formalize it against
-the raw game and prove `BreakerLowerBound 2`.
+The lower endpoint is complete using an explicit partition matroid instead of
+a cycle matroid. Its finite bound has additive slack, deliberately immaterial
+for the asymptotic goal. See
+[the formalized application](../lower-bound/best/partition-proof.md) and
+[the formalization framework](formalization-framework.md). The original
+[graphic-matroid argument](../lower-bound/best/matroid-proof.md) remains a
+written alternative; formalizing its sharper finite range is optional.
 
 The old [four-n plan](four_n_upper_bound_lean_plan.md) provides background;
 its cut-cardinality TODO has been addressed by the ordered cut-pair bridge.

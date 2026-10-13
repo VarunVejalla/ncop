@@ -3,8 +3,9 @@
 Status update: the ordered cut-pair bridge in `NCop.CutPairs` and
 `NCop.Frontier` now addresses the cut-counting obstacle below, and
 `NCop.TwoFrontierRaw` contains the conditional local progress theorem.
-The global strategy and asymptotic endpoint remain unfinished; see
-[research-index.md](research-index.md) for the current proof map.
+The global strategy and asymptotic endpoint are now proved in
+`NCop.BalancedTrees`; see [research-index.md](research-index.md) for the current
+proof map. The rest of this document preserves the earlier proof plan.
 
 Goal:
 

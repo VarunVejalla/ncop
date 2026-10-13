@@ -59,17 +59,17 @@ theorem exists_free_source_edge_after_breaker
       (B.addBreakerSet D).reachableFinset T.s = B.reachableFinset T.s := by
     ext v
     simp [Board.mem_reachableFinset, MakerReach.addBreakerSet_iff]
-  have hstate := h.sourceNumericalState
+  let hstate := h.sourceNumericalState
   have hgt := hstate.sourceChoices_gt_deletedBudget_four_mul
-    (by simpa [sourceNumericalState] using hn)
-    (by simpa [sourceNumericalState] using hm)
-    (by simpa [sourceNumericalState] using hr)
+    (by simpa [hstate, sourceNumericalState] using hn)
+    (by simpa [hstate, sourceNumericalState] using hm)
+    (by simpa [hstate, sourceNumericalState] using hr)
   have hcard :
       (h.r + 1) * n <
         ((B.addBreakerSet D).reachableFinset T.s).card *
           (m - ((B.addBreakerSet D).reachableFinset T.s).card) := by
     simpa [TwoFrontierState.deletedBudget, TwoFrontierState.sourceChoices,
-      sourceNumericalState, hreach] using hgt
+      hstate, sourceNumericalState, hreach] using hgt
   exact Board.exists_free_sourceFrontier_of_mul_gt_breakerBudget hbudget hcard
 
 end TwoFrontierRaw

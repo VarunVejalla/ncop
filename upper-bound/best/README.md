@@ -10,7 +10,16 @@ At `m=4n`, the arithmetic proof gives `S(m-S) > (r+1)n` for `r <= m-2`.
 Breaker therefore cannot block all progress edges with its total deletion
 budget. Expansion eventually exhausts unused vertices, forcing a joining edge.
 
-The arithmetic and conditional local progress have Lean proofs in `NCop/`.
-Initialization, invariant preservation, side swapping, global termination,
-and the asymptotic endpoint remain to be assembled. See
-[the research index](../../docs/research-index.md).
+The complete strategy, including initialization, invariant preservation,
+side swapping, and termination, is proved in `NCop/BalancedTrees.lean`:
+
+```lean
+NCop.makerWins_of_four_mul_le
+NCop.makerUpperBound_four
+Candidate.upper
+```
+
+The finite theorem covers every `m >= 4n`, `n >= 1`. The asymptotic theorem
+proves the exact epsilon/eventually predicate `NCop.MakerUpperBound 4`.
+See [the research index](../../docs/research-index.md) and the axiom audit
+`lake build NCop.ProofAudit`.
