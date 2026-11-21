@@ -80,8 +80,20 @@ See also [the evaluator guide](lean_research_setup.md).
 
 ## Research leads
 
+Current exploration handoff (2026-10-12): the candidate upper coefficient
+`1 + sqrt(6)` is saved in
+[the deferred proof handoff](../upper-bound/experiments/sqrt-six-handoff.md).
+It is not a complete endpoint proof; formalization is deferred by the owner.
+The active priority is smaller constants, starting with four-move threats
+against asymmetric near-saturated outside degrees. See
+[longer-lookahead exploration](../upper-bound/experiments/longer-lookahead.md)
+for scripts, verification records, and the limitations of current estimates.
+
 - Lower-bound improvements: stronger Breaker strategies, matroid refinements,
   and potential or counting methods.
+  [Moving-cut experiments](../lower-bound/experiments/moving-cut-notes.md)
+  test these policies against exhaustive Maker play; mixed cut/threat repair
+  gives finite successes but no asymptotic improvement yet.
 - Upper-bound improvements beyond `2 + sqrt(3)`: longer lookahead, adaptive component growth,
   improved potentials, LP relaxations, conductance/resistance, and overlap
   counting of remaining winning paths.
